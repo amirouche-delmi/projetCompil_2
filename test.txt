@@ -1,0 +1,165 @@
+<!------- Les Erreurs Syntaxiques et Sémantique traitées ------->
+
+<!-- 1) Idf double déclarée -->
+<!-- 2) Taille d'une tableau <= 0 -->
+<!-- 3) Changement de la valeure d'une constante -->
+<!-- 4) Idf non déclaré -->
+<!-- 5) Non compatibilité des types -->
+<!-- 6) Indice d'un tableau < 0 -->
+<!-- 7) Dépassement de la taille d’un tableau -->
+<!-- 8) Division sur zéro -->
+<!-- 9) Compatibilité et nombre de signe de formatage pour l'instruction INPUT -->
+<!-- 10) Compatibilité et nombre de signe de formatage pour l'instruction OUTPUT -->
+
+<!-- Pour tester un cas décommentez le commentaire associé dans le code -->
+
+<!docprogram ProgTest>       <!------ debut du programme ----->
+    
+    <!------ Partie declaration des variables ------>
+    
+    <SUB  VARIABLE>   
+        <vInt1 AS INT />;
+        
+        <!-- 1) Idf double déclarée -->
+            <!-- <vInt1 AS INT />; --> 
+
+        <vInt2 | vInt3 | vInt4 | vInt5 AS INT />;
+        <vFlt1 AS FLT />;
+        <vFlt2 | vFlt3 | vFlt4 | vFlt5 AS FLT />;
+        <vChr AS CHR />;
+        <vStr AS STR />;
+
+        <ARRAY AS INT>
+
+        <!-- 2) Taille d'une tableau <= 0 -->      
+                <!-- <tabInt1 : (-10) /> -->
+
+            <tabInt2 : (+3) />
+        </ARRAY>
+        <ARRAY AS FLT>        
+            <tabFlt1: 10 />
+            <tabFlt2 : (+3) />
+        </ARRAY>
+
+        <vBol1 AS BOL />;        
+        <vBol2 | vBol3 | vBol4 | vBol5 AS BOL />;
+    </SUB  VARIABLE>
+
+    <!-------- Partie declaration des constantes ------->
+
+    <SUB  CONSTANTE>
+        <cInt1 = 23 />;
+        <cFlt1 = 67.355 />;
+        <cStr1 = "hello" />;
+        <cChr1 = 'k' />;
+        <cBol1 = FALSE />;
+        <cInt2 AS INT /> ;
+        <cInt3 | cInt4 | cInt5 AS INT /> ;
+        <cFlt2 | cFlt3 | cFlt4 AS FLT /> ;
+        <cBol2 AS BOL /> ;
+    </SUB  CONSTANTE>
+    
+    <body>    <!-------- Partie instructions -------->
+
+        <!-------- Affectation --------->
+
+        <AFF: vFlt1, (cFlt3 + 7.1 + cFlt2) / (5.3-(-2.1))/>
+        <AFF: vBol3, NOT(OR(FALSE, AND(TRUE, cBol2))) />
+        <AFF: vChr, 'c' />
+        <AFF: vStr, "hello" />
+        <AFF: tabInt2[2], (vInt2 + 7 + tabInt2[1]) * (5-(-2))/>
+
+        <!-- 3) Changement de la valeure d'une constante -->
+                <!-- <AFF: cInt1, 0 /> -->
+
+        <!-- 4) Idf non déclaré -->
+                <!-- <AFF: tab[0], 0 /> -->
+        
+        <!-- 5) Non compatibilité des types -->
+                <!-- <AFF: vInt1, 1.5 /> -->
+                <!-- <AFF: vBol1, 3 /> -->
+                <!-- <AFF: tabFlt1[1], TRUE /> -->
+
+        <!-- 6) Indice d'un tableau < 0 -->
+                <!-- <AFF: tabFlt1[(-2)], 5.5 /> -->
+
+        <!-- 7) Dépassement de la taille d’un tableau -->
+                <!-- <AFF: tabInt2[5], 5 /> -->
+
+        <!-- 8) Division sur zéro -->
+                <!-- <AFF: vInt2, 34 / 0 + ((-4) + vInt3) * tabInt2[2] /> -->
+
+        <!-------- INPUT / OUTPUT --------->
+
+        <!-- 9) Compatibilité et nombre de signe de formatage pour l'instruction INPUT -->
+                <!-- <INPUT : tabInt2[(+2)] "donner la valeur de : %" /> -->
+                <!-- <INPUT : tabInt2[(+2)] "donner la valeur de : % $" /> -->
+      
+        <!-- 10) Compatibilité et nombre de signe de formatage pour l'instruction OUTPUT -->
+                <!-- <OUTPUT: "la valeur de vInt1 est : %" + vInt1/> -->
+                <!-- <OUTPUT: "la valeur de vFlt1 est : %" + vFlt1 + "la valeur de vFlt2 est : " + vFlt2 /> -->
+
+        <!-------- La condition IF THEN ELSE -------->
+
+        <IF: AND(EGA(vInt3, 3), SUP(cInt4, 7)) >
+            <THEN>
+                <OUTPUT: "vInt3 = 3 et cInt4 > 7" />
+                <IF: OR(EGA(vInt4, 4), INF(cFlt4, 4.5)) >
+                    <THEN>
+                        <OUTPUT: "vInt4 = 4 ou cFlt4 > 4.5" />
+                    </THEN>
+                    <ELSE>
+                        <OUTPUT: "condition non vérifiée" />
+                    </ELSE>
+                </IF>
+                <AFF: vBol1, AND(NOT(OR(3, FALSE)), TRUE) />
+            </THEN>
+            <ELSE>
+                <OUTPUT: "condition non vérifiée" />
+            </ELSE>
+        </IF>
+
+        <!---------- La boucle DO WHILE --------->
+
+        <DO>
+            <AFF: vInt4, vInt4 + 1 />
+            <DO>
+                <OUTPUT: "la sous boucle do while ..." />
+                <AFF: vBol2, TRUE />
+                <IF: OR(EGA(vInt4, 4), INF(cFlt4, 4.5)) >
+                    <THEN>
+                        <OUTPUT: "vInt4 = 4 ou cFlt4 > 4.5" />
+                    </THEN>
+                    <ELSE>
+                        <OUTPUT: "condition non vérifiée" />
+                    </ELSE>
+                </IF>
+                <AFF: vBol1, AND(NOT(OR(3, FALSE)), TRUE) />
+
+                <WHILE : FALSE />
+            </DO>
+            <WHILE : INF(vInt4, 10) />
+        </DO>
+
+        <!---------- La boucle FOR ---------->
+
+        <FOR vInt5 = 1 UNTIL 14>
+            <OUTPUT: "la valeur de vInt5 = $" + vInt5 />
+            <DO>
+                <AFF: vBol2, TRUE />
+                <IF: OR(EGA(vInt4, 4), INF(cFlt4, 4.5)) >
+                    <THEN>
+                        <OUTPUT: "vInt4 = 4 ou cFlt4 > 4.5" />
+                    </THEN>
+                    <ELSE>
+                        <OUTPUT: "condition non vérifiée" />
+                    </ELSE>
+                </IF>
+                <AFF: vBol1, AND(NOT(OR(3, FALSE)), TRUE) />
+
+                <WHILE : FALSE />
+            </DO>
+        </FOR>
+
+    </body>
+</docprogram>
